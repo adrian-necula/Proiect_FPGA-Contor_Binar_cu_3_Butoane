@@ -14,7 +14,9 @@ Am gandit inceperea proiectului prin definirea unei structuri generale pentru co
  - btn_rst - butonul folosit pentru resetarea contorului
  - led[15:0] - iesirea (cele 16 led-uri)
  - count[15:0] - registrul intern care retine valoarea curenta a contorului (De vazut ECE 3300 31-33)
+
 Am ales ca fiecare led sa reprezinte un bit al valorii curente a contorului, astfel incat led[0] va afisa LSB, iar led[15] va afisa MSB, folosind un bus atat pentru led, cat si pentru counter, fiind o varianta mai curata.
+
 De asemenea, proiectul va fi sincronizat pe front-ul pozitiv al clock-ului, pentru ca modificarile contorului sa fie predictibile.
 
 
@@ -37,5 +39,12 @@ Modulul foloseste doua registre succesive:
  - al doilea registru ofera semnalul sincronizat, folosit mai departe in proiect
 
 Pentru verificare am facut un testbench scurt, in care am urmarit clk, btn_in si btn_sync. In waveform se vede ca btn_sync urmareste btn_in cu o mica intarziere, lucru normal pentru acest tip de sincronizare.
+
+
+Am adaugat modulul debouncer, folosit pentru filtrarea semnalului primit de la buton dupa sincronizare. Acest modul este necesar deoarece butoanele fizice pot produce oscilatii scurte la apasare sau eliberare, iar acestea ar putea fi interpretate gresit ca mai multe apasari.
+
+Am gandit debouncer-ul astfel incat iesirea btn_stable sa nu se modifice imediat cand se schimba btn_in. Daca semnalul de intrare ramane diferit de iesirea stabila un anumit numar de cicluri de clock, atunci noua stare este acceptata.
+
+Pentru verificare am realizat o simulare simpla, in care am introdus schimbari rapide pe btn_in, pentru a simula bouncing-ul. In waveform se observa ca btn_stable ignora oscilatiile scurte si se modifica doar dupa ce semnalul ramane stabil suficient timp.
 
 
