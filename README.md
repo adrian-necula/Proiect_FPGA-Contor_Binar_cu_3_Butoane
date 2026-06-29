@@ -17,6 +17,7 @@ Am gandit inceperea proiectului prin definirea unei structuri generale pentru co
 Am ales ca fiecare led sa reprezinte un bit al valorii curente a contorului, astfel incat led[0] va afisa LSB, iar led[15] va afisa MSB, folosind un bus atat pentru led, cat si pentru counter, fiind o varianta mai curata.
 De asemenea, proiectul va fi sincronizat pe front-ul pozitiv al clock-ului, pentru ca modificarile contorului sa fie predictibile.
 
+
 Am inceput implementarea cu modulul counter16b, deoarece logica de numarare este partea principala a proiectului. Modulul are intrarile clk, rst, inc, dec si iesirea count[15:0].
 
 Comportamentul modulului este urmatorul:
@@ -27,3 +28,14 @@ Comportamentul modulului este urmatorul:
  - daca inc și dec sunt active simultan, contorul nu isi modifica valoarea, deoarece comenzile sunt contradictorii
 
 Pentru verificare am realizat un testbench simplu, in care am generat clock-ul si am testat resetarea, incrementarea, decrementarea si cazul inc + dec simultan. In waveform am urmarit semnalele clk, rst, inc, dec si count[15:0].
+
+
+Am adaugat modulul button_sync, pe care il folosesc pentru a sincroniza semnalul venit de la buton cu clock-ul sistemului. Am ales sa fac pasul acesta separat deoarece butoanele sunt intrari externe fata de FPGA si nu este o idee buna sa fie folosite direct in logica principala.
+
+Modulul foloseste doua registre succesive:
+ - primul registru preia semnalul brut al butonului
+ - al doilea registru ofera semnalul sincronizat, folosit mai departe in proiect
+
+Pentru verificare am facut un testbench scurt, in care am urmarit clk, btn_in si btn_sync. In waveform se vede ca btn_sync urmareste btn_in cu o mica intarziere, lucru normal pentru acest tip de sincronizare.
+
+
