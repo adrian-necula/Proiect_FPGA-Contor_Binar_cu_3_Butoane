@@ -55,3 +55,21 @@ Acest pas este necesar deoarece, daca butonul este tinut apasat, semnalul ramane
 Am realizat un testbench, in care am tinut semnalul signal_in pe 1 mai multe cicluri. In waveform se observa ca pulse_out devine 1 doar pentru un singur ciclu la aparitia frontului pozitiv.
 
 
+Am adaugat modulul top, unde am legat modulele realizate pana acum pentru a obtine functionarea completa a contorului pe 16 biti. In acest modul, fiecare buton trece prin acelasi lant de prelucrare, astfel incat semnalul fizic sa fie sincronizat, filtrat si apoi transformat intr-un impuls de un singur ciclu.
+- Am integrat modulele button_sync, debouncer, edge_detector si counter16b.
+- Am folosit cate un lant separat pentru butoanele de incrementare, decrementare si reset.
+- Semnalele rezultate, inc_pulse, dec_pulse si rst_pulse, sunt conectate la intrarile contorului.
+- Iesirea count[15:0] este legata direct la led[15:0], pentru afisarea valorii contorului pe LED-uri.
+  
+Am realizat un testbench pentru top, in care am verificat functionarea lantului complet prin resetare, incrementare si decrementare. In simulare se observa ca apasarile butoanelor sunt transformate corect in comenzi pentru contor, iar valoarea afisata pe LED-uri se modifica in functie de operatia efectuata.
+
+
+## Probleme intampinate si rezolvari:
+
+Pe parcursul proiectului am intampinat cateva probleme legate de tratarea butoanelor si de integrarea modulelor in Vivado. Initial, am observat ca butoanele fizice nu pot fi folosite direct in contor, deoarece semnalele lor sunt externe fata de clock si pot avea bouncing. Pentru rezolvare, am impartit tratarea butoanelor in trei module: button_sync, debouncer si edge_detector.
+
+O alta problema a aparut in simulari, unde unele semnale apareau cu valoarea X. Am rezolvat acest lucru prin initializarea semnalelor si prin verificarea conexiunilor dintre testbench si modulul testat. De exemplu, la button_sync a fost necesar sa conectez corect si semnalul clk.
+
+La modulul debouncer, a trebuit sa folosesc o valoare mica pentru numarator in simulare, pentru ca rezultatul sa fie vizibil rapid, iar pentru implementarea pe placa valoarea trebuie sa fie mai mare, pentru a obtine o intarziere reala de ordinul milisecundelor.
+
+La final, provocarea principala a fost integrarea modulelor in top si realizarea fisierului .xdc, unde numele porturilor trebuiau sa corespunda exact cu cele din modulul principal. Impartirea proiectului in module mici m-a ajutat sa testez fiecare parte separat si sa inteleg mai usor functionarea completa a contorului.
