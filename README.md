@@ -48,3 +48,10 @@ Am gandit debouncer-ul astfel incat iesirea btn_stable sa nu se modifice imediat
 Pentru verificare am realizat o simulare simpla, in care am introdus schimbari rapide pe btn_in, pentru a simula bouncing-ul. In waveform se observa ca btn_stable ignora oscilatiile scurte si se modifica doar dupa ce semnalul ramane stabil suficient timp.
 
 
+Am adaugat modulul edge_detector, folosit pentru detectarea frontului pozitiv al semnalului de la buton. Modulul primeste semnalul deja stabilizat de la debouncer si genereaza un impuls de un singur ciclu de clock atunci cand butonul trece din starea 0 in starea 1.
+
+Acest pas este necesar deoarece, daca butonul este tinut apasat, semnalul ramane pe 1 mai multe cicluri de clock, iar contorul ar putea incrementa sau decrementa continuu. Prin folosirea acestui modul, o apasare valida produce o singura comanda pentru contor.
+
+Am realizat un testbench, in care am tinut semnalul signal_in pe 1 mai multe cicluri. In waveform se observa ca pulse_out devine 1 doar pentru un singur ciclu la aparitia frontului pozitiv.
+
+
