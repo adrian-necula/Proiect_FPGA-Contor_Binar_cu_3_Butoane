@@ -102,3 +102,11 @@ Am inceput partea de afisare pe 7 segmente prin adaugarea modulului binary_to_de
 
 Am adaugat modulele num, mux, transcodor_7seg si decodor_anod, folosite pentru controlul afisajului pe 7 segmente, cu ajutorul exemplelor lucrate la laboratorul de CID. 
 Aceste module permit afisarea pe rand a cifrelor, suficient de rapid incat pe afisaj sa para ca sunt aprinse simultan.
+
+
+In final, am integrat afisajul pe 7 segmente in modulul top, in paralel cu afisarea valorii pe LED-uri. Valoarea interna count[15:0] este folosita atat pentru LED-uri, cat si pentru display-ul cu 7 segmente, astfel incat ambele afisari sa reprezinte aceeasi valoare a contorului.
+- Am conectat binary_to_decimal la valoarea count[15:0].
+- Am legat cifrele rezultate la mux, pentru selectarea cifrei active.
+- Am conectat transcodor_7seg pentru generarea semnalelor seg[7:0].
+- Am conectat decodor_anod pentru selectarea pozitiei active prin an[7:0].
+- Am actualizat fisierul .xdc pentru semnalele afisajului pe 7 segmente.
