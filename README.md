@@ -98,3 +98,7 @@ Astfel, afisajul cu 7 segmente foloseste aceeasi valoare interna a contorului ca
 Am inceput partea de afisare pe 7 segmente prin adaugarea modulului binary_to_decimal. Ideea este ca valoarea contorului sa ramana aceeasi, dar sa poata fi afisata si in format zecimal, nu doar binar pe LED-uri.
 - Modulul imparte valoarea count[15:0] in 5 cifre zecimale.
 - Cifrele rezultate vor fi folosite mai departe pentru afisarea valorii contorului in format zecimal.
+
+
+Am adaugat modulele num, mux, transcodor_7seg si decodor_anod, folosite pentru controlul afisajului pe 7 segmente, cu ajutorul exemplelor lucrate la laboratorul de CID. 
+Aceste module permit afisarea pe rand a cifrelor, suficient de rapid incat pe afisaj sa para ca sunt aprinse simultan.
