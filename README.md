@@ -110,3 +110,14 @@ In final, am integrat afisajul pe 7 segmente in modulul top, in paralel cu afisa
 - Am conectat transcodor_7seg pentru generarea semnalelor seg[7:0].
 - Am conectat decodor_anod pentru selectarea pozitiei active prin an[7:0].
 - Am actualizat fisierul .xdc pentru semnalele afisajului pe 7 segmente.
+
+
+## Probleme intampinate si rezolvari pentru afisajul pe 7 segmente:
+
+La partea de afisare pe 7 segmente, prima problema a fost sa inteleg cum pot afisa valoarea contorului in format zecimal. Contorul este pe 16 biti, deci poate ajunge pana la 2^16 = 65535, iar varianta de a face manual toate combinatiile pentru segmente nu ar fi fost potrivita. Din acest motiv, am folosit modulul binary_to_decimal, care imparte valoarea contorului in 5 cifre zecimale.
+
+O alta parte pe care a trebuit sa o inteleg a fost multiplexarea afisajului. Practic, display-ul nu afiseaza toate cifrele in acelasi timp, ci le activeaza foarte rapid pe rand. Pentru asta am folosit modulul num, care genereaza selectia, modulul mux, care alege cifra curenta, si modulul decodor_anod, care selecteaza pozitia activa de pe afisas.
+
+Am fost atent si la ordinea bitilor pentru seg[7:0], deoarece in varianta mea am inclus si punctul zecimal in acelasi bus. De aceea a trebuit sa adaptez fisierul de constrangeri .xdc, astfel incat legaturile dintre semnalele din cod si pinii fizici ai placii sa fie corecte.
+
+In final, partea de 7 segmente foloseste aceeasi valoare count[15:0] ca si LED-urile. Astfel, contorul este afisat in paralel in doua moduri: binar pe LED-uri si zecimal pe afisajul cu 7 segmente.
