@@ -73,3 +73,25 @@ O alta problema a aparut in simulari, unde unele semnale apareau cu valoarea X. 
 La modulul debouncer, a trebuit sa folosesc o valoare mica pentru numarator in simulare, pentru ca rezultatul sa fie vizibil rapid, iar pentru implementarea pe placa valoarea trebuie sa fie mai mare, pentru a obtine o intarziere reala de ordinul milisecundelor.
 
 La final, provocarea principala a fost integrarea modulelor in top si realizarea fisierului .xdc, unde numele porturilor trebuiau sa corespunda exact cu cele din modulul principal. Impartirea proiectului in module mici m-a ajutat sa testez fiecare parte separat si sa inteleg mai usor functionarea completa a contorului.
+
+
+## Cerinta suplimentara: 
+- Adăugați un afișaj cu 7 segmente (7-segment display) care să arate valoarea contorului în format zecimal.
+- Asigurați-vă că afișajul cu 7 segmente este sincronizat corect cu valoarea binară afișată pe LED-uri (ambele trebuie să reprezinte aceeași valoare a contorului, în paralel).
+
+## Rezolvare:
+
+Pentru aceasta parte am incercat sa separ problema in pasi mai mici, ca sa fie mai usor de inteles si de testat. Valoarea count[15:0] este folosita in continuare pentru LED-uri, iar pentru 7 segmente este mai intai impartita in cifre zecimale.
+
+M-am inspirat si din exemplele facute la laboratorul de CID, unde am lucrat cu module pentru numarare, multiplexare, transcodare si detector de anod. Am adaptat ideea pentru proiectul meu, deoarece aici contorul este pe 16 biti si poate ajunge pana la valoarea 65535, deci sunt necesare 5 cifre zecimale.
+
+Pentru afisajul pe 7 segmente am folosit urmatoarele module: 
+- binary_to_decimal - imparte valoarea contorului in 5 cifre zecimale;
+- num - genereaza un semnal de refresh pentru multiplexarea afisajului;
+- mux - alege cifra care trebuie afisata la un anumit moment;
+- transcodor_7seg - transforma cifra selectata in semnalele pentru segmente;
+- decodor_anod - selecteaza pozitia activa de pe display.
+
+Astfel, afisajul cu 7 segmente foloseste aceeasi valoare interna a contorului ca LED-urile, doar ca o afiseaza in format zecimal.
+
+
