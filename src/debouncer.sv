@@ -26,7 +26,7 @@ module debouncer(
     output logic btn_stable
     );
     
-localparam int max_count = 5;
+localparam int max_count = 1_000_000;
 logic [19:0] counter = 0;
 
 always_ff @(posedge clk) begin
