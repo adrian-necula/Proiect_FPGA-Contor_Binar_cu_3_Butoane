@@ -18,7 +18,7 @@ Am gandit inceperea proiectului prin definirea unei structuri generale pentru co
  - btn_dec - butonul folosit pentru decrementare
  - btn_rst - butonul folosit pentru resetarea contorului
  - led[15:0] - iesirea (cele 16 led-uri)
- - count[15:0] - registrul intern care retine valoarea curenta a contorului (De vazut ECE 3300 31-33)
+ - count[15:0] - registrul intern care retine valoarea curenta a contorului (ECE 3300 31-33)
 
 Am ales ca fiecare led sa reprezinte un bit al valorii curente a contorului, astfel incat led[0] va afisa LSB, iar led[15] va afisa MSB, folosind un bus atat pentru led, cat si pentru counter, fiind o varianta mai curata.
 
@@ -68,9 +68,9 @@ Am adaugat modulul top, unde am legat modulele realizate pana acum pentru a obti
 - Am integrat modulele button_sync, debouncer, edge_detector si counter16b.
 - Am folosit cate un lant separat pentru butoanele de incrementare, decrementare si reset.
 - Semnalele rezultate, inc_pulse, dec_pulse si rst_pulse, sunt conectate la intrarile contorului.
-- Iesirea count[15:0] este legata direct la led[15:0], pentru afisarea valorii contorului pe LED-uri.
+- Iesirea count[15:0] este legata direct la led[15:0], pentru rea valorii contorului pe LED-uri.
   
-Am realizat un testbench pentru top, in care am verificat functionarea lantului complet prin resetare, incrementare si decrementare. In simulare se observa ca apasarile butoanelor sunt transformate corect in comenzi pentru contor, iar valoarea afisata pe LED-uri se modifica in functie de operatia efectuata.
+Am realizat un testbench pentru top, in care am verificat functionarea lantului complet prin resetare, incrementare si decrementare. In simulare se observa ca apasarile butoanelor sunt transformate corect in comenzi pentru contor, iar valoarea ta pe LED-uri se modifica in functie de operatia efectuata.
 
 ![Simulare top](images/test_top.png)
 
@@ -95,26 +95,26 @@ Pentru aceasta parte am incercat sa separ problema in pasi mai mici, ca sa fie m
 
 M-am inspirat si din exemplele facute la laboratorul de CID, unde am lucrat cu module pentru numarare, multiplexare, transcodare si detector de anod. Am adaptat ideea pentru proiectul meu, deoarece aici contorul este pe 16 biti si poate ajunge pana la valoarea 65535, deci sunt necesare 5 cifre zecimale.
 
-Pentru afisajul pe 7 segmente am folosit urmatoarele module: 
+Pentru jul pe 7 segmente am folosit urmatoarele module: 
 - binary_to_decimal - imparte valoarea contorului in 5 cifre zecimale;
-- num - genereaza un semnal de refresh pentru multiplexarea afisajului;
-- mux - alege cifra care trebuie afisata la un anumit moment;
+- num - genereaza un semnal de refresh pentru multiplexarea jului;
+- mux - alege cifra care trebuie ta la un anumit moment;
 - transcodor_7seg - transforma cifra selectata in semnalele pentru segmente;
 - decodor_anod - selecteaza pozitia activa de pe display.
 
-Astfel, afisajul cu 7 segmente foloseste aceeasi valoare interna a contorului ca LED-urile, doar ca o afiseaza in format zecimal.
+Astfel, jul cu 7 segmente foloseste aceeasi valoare interna a contorului ca LED-urile, doar ca o afiseaza in format zecimal.
 
 
-Am inceput partea de afisare pe 7 segmente prin adaugarea modulului binary_to_decimal. Ideea este ca valoarea contorului sa ramana aceeasi, dar sa poata fi afisata si in format zecimal, nu doar binar pe LED-uri.
+Am inceput partea de re pe 7 segmente prin adaugarea modulului binary_to_decimal. Ideea este ca valoarea contorului sa ramana aceeasi, dar sa poata fi ta si in format zecimal, nu doar binar pe LED-uri.
 - Modulul imparte valoarea count[15:0] in 5 cifre zecimale.
-- Cifrele rezultate vor fi folosite mai departe pentru afisarea valorii contorului in format zecimal.
+- Cifrele rezultate vor fi folosite mai departe pentru rea valorii contorului in format zecimal.
 
 
-Am adaugat modulele num, mux, transcodor_7seg si decodor_anod, folosite pentru controlul afisajului pe 7 segmente, cu ajutorul exemplelor lucrate la laboratorul de CID. 
-Aceste module permit afisarea pe rand a cifrelor, suficient de rapid incat pe afisaj sa para ca sunt aprinse simultan.
+Am adaugat modulele num, mux, transcodor_7seg si decodor_anod, folosite pentru controlul jului pe 7 segmente, cu ajutorul exemplelor lucrate la laboratorul de CID. 
+Aceste module permit rea pe rand a cifrelor, suficient de rapid incat pe j sa para ca sunt aprinse simultan.
 
 
-In final, am integrat afisajul pe 7 segmente in modulul top, in paralel cu afisarea valorii pe LED-uri. Valoarea interna count[15:0] este folosita atat pentru LED-uri, cat si pentru display-ul cu 7 segmente, astfel incat ambele afisari sa reprezinte aceeasi valoare a contorului.
+In final, am integrat jul pe 7 segmente in modulul top, in paralel cu rea valorii pe LED-uri. Valoarea interna count[15:0] este folosita atat pentru LED-uri, cat si pentru display-ul cu 7 segmente, astfel incat ambele ri sa reprezinte aceeasi valoare a contorului.
 - Am conectat binary_to_decimal la valoarea count[15:0].
 - Am legat cifrele rezultate la mux, pentru selectarea cifrei active.
 - Am conectat transcodor_7seg pentru generarea semnalelor seg[7:0].
@@ -124,9 +124,9 @@ In final, am integrat afisajul pe 7 segmente in modulul top, in paralel cu afisa
 
 ## Probleme intampinate si rezolvari pentru afisajul pe 7 segmente:
 
-La partea de afisare pe 7 segmente, prima problema a fost sa inteleg cum pot afisa valoarea contorului in format zecimal. Contorul este pe 16 biti, deci poate ajunge pana la 2^16 = 65535, iar varianta de a face manual toate combinatiile pentru segmente nu ar fi fost potrivita. Din acest motiv, am folosit modulul binary_to_decimal, care imparte valoarea contorului in 5 cifre zecimale.
+La partea de afisare pe 7 segmente, prima problema a fost sa inteleg cum pot afisa valoarea contorului in format zecimal. Contorul este pe 16 biti, deci poate ajunge pana la 2^16 - 1 = 65535, iar varianta de a face manual toate combinatiile pentru segmente nu ar fi fost potrivita. Din acest motiv, am folosit modulul binary_to_decimal, care imparte valoarea contorului in 5 cifre zecimale.
 
-O alta parte pe care a trebuit sa o inteleg a fost multiplexarea afisajului. Practic, display-ul nu afiseaza toate cifrele in acelasi timp, ci le activeaza foarte rapid pe rand. Pentru asta am folosit modulul num, care genereaza selectia, modulul mux, care alege cifra curenta, si modulul decodor_anod, care selecteaza pozitia activa de pe afisas.
+O alta parte pe care a trebuit sa o inteleg a fost multiplexarea afisajului. Practic, display-ul nu afiseaza toate cifrele in acelasi timp, ci le activeaza foarte rapid pe rand. Pentru asta am folosit modulul num, care genereaza selectia, modulul mux, care alege cifra curenta, si modulul decodor_anod, care selecteaza pozitia activa de pe afisaj.
 
 Am fost atent si la ordinea bitilor pentru seg[7:0], deoarece in varianta mea am inclus si punctul zecimal in acelasi bus. De aceea a trebuit sa adaptez fisierul de constrangeri .xdc, astfel incat legaturile dintre semnalele din cod si pinii fizici ai placii sa fie corecte.
 
