@@ -36,6 +36,7 @@ Comportamentul modulului este urmatorul:
 
 Pentru verificare am realizat un testbench simplu, in care am generat clock-ul si am testat resetarea, incrementarea, decrementarea si cazul inc + dec simultan. In waveform am urmarit semnalele clk, rst, inc, dec si count[15:0].
 
+![Simulare counter16b](images/test_count16b.png)
 
 Am adaugat modulul button_sync, pe care il folosesc pentru a sincroniza semnalul venit de la buton cu clock-ul sistemului. Am ales sa fac pasul acesta separat deoarece butoanele sunt intrari externe fata de FPGA si nu este o idee buna sa fie folosite direct in logica principala.
 
@@ -45,6 +46,7 @@ Modulul foloseste doua registre succesive:
 
 Pentru verificare am facut un testbench scurt, in care am urmarit clk, btn_in si btn_sync. In waveform se vede ca btn_sync urmareste btn_in cu o mica intarziere, lucru normal pentru acest tip de sincronizare.
 
+![Simulare button_sync](images/test_button_sync.png)
 
 Am adaugat modulul debouncer, folosit pentru filtrarea semnalului primit de la buton dupa sincronizare. Acest modul este necesar deoarece butoanele fizice pot produce oscilatii scurte la apasare sau eliberare, iar acestea ar putea fi interpretate gresit ca mai multe apasari.
 
@@ -52,6 +54,7 @@ Am gandit debouncer-ul astfel incat iesirea btn_stable sa nu se modifice imediat
 
 Pentru verificare am realizat o simulare simpla, in care am introdus schimbari rapide pe btn_in, pentru a simula bouncing-ul. In waveform se observa ca btn_stable ignora oscilatiile scurte si se modifica doar dupa ce semnalul ramane stabil suficient timp.
 
+![Simulare debouncer](images/test_debouncer.png)
 
 Am adaugat modulul edge_detector, folosit pentru detectarea frontului pozitiv al semnalului de la buton. Modulul primeste semnalul deja stabilizat de la debouncer si genereaza un impuls de un singur ciclu de clock atunci cand butonul trece din starea 0 in starea 1.
 
@@ -59,6 +62,7 @@ Acest pas este necesar deoarece, daca butonul este tinut apasat, semnalul ramane
 
 Am realizat un testbench, in care am tinut semnalul signal_in pe 1 mai multe cicluri. In waveform se observa ca pulse_out devine 1 doar pentru un singur ciclu la aparitia frontului pozitiv.
 
+![Simulare edge_detector](images/test_edge_detector.png)
 
 Am adaugat modulul top, unde am legat modulele realizate pana acum pentru a obtine functionarea completa a contorului pe 16 biti. In acest modul, fiecare buton trece prin acelasi lant de prelucrare, astfel incat semnalul fizic sa fie sincronizat, filtrat si apoi transformat intr-un impuls de un singur ciclu.
 - Am integrat modulele button_sync, debouncer, edge_detector si counter16b.
@@ -68,6 +72,7 @@ Am adaugat modulul top, unde am legat modulele realizate pana acum pentru a obti
   
 Am realizat un testbench pentru top, in care am verificat functionarea lantului complet prin resetare, incrementare si decrementare. In simulare se observa ca apasarile butoanelor sunt transformate corect in comenzi pentru contor, iar valoarea afisata pe LED-uri se modifica in functie de operatia efectuata.
 
+![Simulare top](images/test_top.png)
 
 ## Probleme intampinate si rezolvari:
 
