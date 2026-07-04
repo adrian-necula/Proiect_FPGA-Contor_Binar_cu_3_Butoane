@@ -6,6 +6,11 @@ Implementarea unui contor binar pe 16 biti, afisat pe 16 LED-uri, controlat prin
  - Buton 2 — Decrementare: la fiecare apăsare, valoarea binară afișată pe LED-uri se decrementează cu 1.
  - Buton 3 — Reset: readuce valoarea contorului la 0 (toate LED-urile stinse).
 
+## Schema bloc 
+Schema de mai jos prezinta modul in care sunt conectate modulele principale ale proiectului. Fiecare buton trece prin sincronizare, debounce si detectare de front, iar impulsurile rezultate controleaza modulul counter16b. Valoarea contorului este afisata in paralel pe LED-uri si pe afisajul cu 7 segmente.
+
+![Schema bloc a proiectului](images/schema_bloc.jpeg)
+
 ## Rezolvare: 
 Am gandit inceperea proiectului prin definirea unei structuri generale pentru contorul binar pe 16 biti. Stabilesc ca semnale principale ale proiectului sa fie urmatoarele:
  - clk - clock-ul principal al placii, pentru sincronizarea sistemului
